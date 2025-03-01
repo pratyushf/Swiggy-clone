@@ -4,7 +4,7 @@ import {
 } from "react-icons/fa";
 
 const FoodItems = () => {
-  const arr1 = [1, 2, 3, 4, 5, 6, 7];
+  const arr1 = [1, 2, 3, 4, 5, 6, 7,5];
   return (
     <div className="flex p-1 flex-col h-full w-[80%] gap-5 border-b-2 border-b-gray-200">
       <div className=" flex justify-between">
@@ -12,8 +12,8 @@ const FoodItems = () => {
           Pratyush whats on your mind ?
         </p>
         <div className=" flex items-center text-3xl gap-2">
-          <FaRegArrowAltCircleLeft />
-          <FaRegArrowAltCircleRight />
+          <FaRegArrowAltCircleLeft className=" cursor-pointer hover:text-orange-600" />
+          <FaRegArrowAltCircleRight className=" cursor-pointer hover:text-orange-600" />
         </div>
       </div>
       <div className="flex">

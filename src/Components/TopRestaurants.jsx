@@ -5,7 +5,7 @@ import {
 } from "react-icons/fa";
 
 const TopRestaurants = () => {
-  const arr2 = [1, 3, 4, 5];
+  const arr2 = [1, 3, 4, 5, 5];
 
   return (
     <div className="w-[80%] m-3 p-1">
@@ -14,8 +14,8 @@ const TopRestaurants = () => {
           Top Restaurants in Nashik
         </p>
         <div className=" flex items-center text-3xl gap-2">
-          <FaRegArrowAltCircleLeft />
-          <FaRegArrowAltCircleRight />
+          <FaRegArrowAltCircleLeft className=" cursor-pointer hover:text-orange-600" />
+          <FaRegArrowAltCircleRight className=" cursor-pointer hover:text-orange-600" />
         </div>
       </div>
       <div className=" flex justify-around">
