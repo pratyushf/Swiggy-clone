@@ -1,14 +1,32 @@
 import RestaurantCard from "./RestaurantCard";
+import { useState, useEffect } from "react";
+import ShimmerForTR from "./ShimmerForTR";
 
 const MainRestaurants = () => {
-  const arr2 = [1, 3, 4, 5, 6, 6, 6, 6, 6];
+  const [mainResData, setMainResData] = useState([]);
+  const [header, setHeader] = useState("Loading");
+
+  useEffect(() => {
+    fetchResData();
+  }, []);
+
+  const fetchResData = async () => {
+    const apiData = await fetch(
+      "https://www.swiggy.com/dapi/restaurants/list/v5?lat=18.52110&lng=73.85020&is-seo-homepage-enabled=true&page_type=DESKTOP_WEB_LISTING"
+    );
+
+    const apiDataJson = await apiData.json();
+    setMainResData(
+      apiDataJson?.data?.cards[4]?.card?.card?.gridElements?.infoWithStyle
+        ?.restaurants
+    );
+    setHeader(apiDataJson?.data?.cards[2]?.card?.card?.title);
+  };
 
   return (
     <div className="w-[80%] m-3 p-1">
       <div className=" flex flex-col ">
-        <p className=" p-2 text-2xl font-semibold ">
-          Restaurants with online food delivery in Nashik
-        </p>
+        <p className=" p-2 text-2xl font-semibold ">{header}</p>
         <div className=" flex items-center text-lg gap-3 ml-8">
           <button className=" cursor-pointer border-gray-400 border hover:bg-orange-500 hover:text-gray-100 px-2 py-1 m-1 rounded-2xl ">
             Filter
@@ -27,11 +45,20 @@ const MainRestaurants = () => {
           </button>
         </div>
       </div>
-      <div className="gap-3 flex flex-wrap p-5">
-        {arr2.map((e) => {
-          return <RestaurantCard key={e} />;
-        })}
-      </div>
+      {mainResData.length == 0 ? (
+        <ShimmerForTR length={8}></ShimmerForTR>
+      ) : (
+        <div className="gap-8 flex flex-wrap p-5">
+          {mainResData.map((restaurant) => {
+            return (
+              <RestaurantCard
+                key={restaurant.info.id}
+                restaurant={restaurant}
+              />
+            );
+          })}
+        </div>
+      )}
     </div>
   );
 };

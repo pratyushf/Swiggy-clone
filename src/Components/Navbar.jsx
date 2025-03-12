@@ -13,7 +13,7 @@ const Navbar = () => {
   const [isDropdownOpen, setDropdownOpen] = useState(false);
 
   return (
-    <div className=" h-[8vh] w-full p-5 flex justify-center gap-9 items-center shadow-gray-400 shadow bg-white text-gray-800">
+    <div className=" fixed z-50 top-0 left-0 h-[9vh] w-full p-5 flex justify-center gap-9 items-center shadow-gray-400 shadow-sm bg-white text-gray-800">
       <img src={swiggyLogo} className="h-10 cursor-pointer" alt="logo" />
       <Link to="/" className="font-medium cursor-pointer hover:text-orange-500 py-2">Home</Link>
       <p className="w-1/5 truncate cursor-pointer hover:text-gray-600">
@@ -47,7 +47,7 @@ const Navbar = () => {
 
         {/* Dropdown Menu */}
         {isDropdownOpen && (
-          <div className="absolute left-1/2 -translate-x-[50%] mt-2 w-48 bg-white border shadow-lg flex flex-col border-t-2 border-t-orange-500">
+          <div className=" z-10 absolute left-1/2 -translate-x-[50%] mt-2 w-48 bg-white border shadow-lg flex flex-col border-t-2 border-t-orange-500">
             <p className="px-4 py-2 cursor-pointer hover:font-semibold">Profile</p>
             <p className="px-4 py-2 cursor-pointer hover:font-semibold">Orders</p>
             <p className="px-4 py-2 cursor-pointer hover:font-semibold">Swiggy One</p>
