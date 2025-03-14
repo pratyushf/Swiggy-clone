@@ -25,7 +25,7 @@ const RestaurantDetailCard = ({ data }) => {
     <div className="flex w-full h-fit p-2 gap-2 border-b border-gray-200">
       {/* Left Section */}
       <div className="flex flex-col gap-2 p-2 w-[70%]">
-        {itemAttribute.vegClassifier === "NONVEG" ? (
+        {itemAttribute?.vegClassifier === "NONVEG" ? (
           <PiTriangleFill className="text-red-600" />
         ) : (
           <FaCircleStop className="text-green-600" />

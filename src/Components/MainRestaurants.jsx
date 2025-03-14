@@ -24,7 +24,7 @@ const MainRestaurants = () => {
   };
 
   return (
-    <div className="w-[80%] m-3 p-1">
+    <div className="w-[80%] m-2">
       <div className=" flex flex-col ">
         <p className=" p-2 text-2xl font-semibold ">{header}</p>
         <div className=" flex items-center text-lg gap-3 ml-8">
@@ -48,7 +48,7 @@ const MainRestaurants = () => {
       {mainResData.length == 0 ? (
         <ShimmerForTR length={8}></ShimmerForTR>
       ) : (
-        <div className="gap-8 flex flex-wrap p-5">
+        <div className="gap-2 flex flex-wrap p-4">
           {mainResData.map((restaurant) => {
             return (
               <RestaurantCard
