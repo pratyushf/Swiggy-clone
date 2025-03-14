@@ -63,7 +63,7 @@ const RestaurantDetailCard = ({ data }) => {
           src={`https://media-assets.swiggy.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_300,h_300,c_fit/${imageId}`}
           alt={name || "Food item"}
         />
-        <button className="cursor-pointer border font-bold mr-4 bg-white w-30 h-10 rounded-xl text-green-500 hover:bg-green-100 transition-all">
+        <button className=" mt-2 cursor-pointer border font-semibold mr-4 bg-white w-30 h-10 rounded-xl text-green-500 hover:bg-green-500 hover:text-white transition-all">
           Add
         </button>
       </div>

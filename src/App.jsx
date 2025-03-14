@@ -19,7 +19,7 @@ const router = createBrowserRouter([
     element: <RootLayout />,
     children: [
       { index: true, element: <Homepage /> },
-      { path: "restaurantMenu", element: <RestaurantMenu /> }, 
+      { path: "restaurantMenu/:resId", element: <RestaurantMenu /> }, 
       { path: "checkout", element: <Cart /> },
       { path: "support", element: <Help /> },
       { path: "search", element: <Search /> },

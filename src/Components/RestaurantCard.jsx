@@ -1,11 +1,14 @@
 /* eslint-disable react/prop-types */
 import { MdStars } from "react-icons/md";
+import { useNavigate } from "react-router-dom"; // Corrected import
 
 const RestaurantCard = ({ restaurant }) => {
-  if (!restaurant || !restaurant.info) return null; // Handle undefined data safely
+  const navigate = useNavigate(); // Hook to handle navigation
 
+  if (!restaurant || !restaurant.info) return null;
 
   const {
+    id,
     name,
     avgRating,
     cuisines,
@@ -16,7 +19,10 @@ const RestaurantCard = ({ restaurant }) => {
   } = restaurant.info;
 
   return (
-    <div className=" w-fit flex flex-col h-fit p-3 cursor-pointer transition delay-50 duration-300 hover:-translate-y-1 hover:scale-90">
+    <div
+      onClick={() => navigate(`/restaurantMenu/${id}`)} // Navigate to restaurant menu on click
+      className="w-fit flex flex-col h-fit p-3 cursor-pointer transition delay-50 duration-300 hover:-translate-y-1 hover:scale-90"
+    >
       <div className="relative">
         <img
           className="h-60 rounded-xl w-70"
@@ -33,7 +39,7 @@ const RestaurantCard = ({ restaurant }) => {
       </div>
       <div className="flex flex-col">
         <p className="font-bold text-xl">
-          {name?.length > 23 ? name.slice(0, 23)+"..." : name}
+          {name?.length > 23 ? name.slice(0, 23) + "..." : name}
         </p>
         <div className="flex items-center gap-1">
           <MdStars className="text-green-500 text-xl" />

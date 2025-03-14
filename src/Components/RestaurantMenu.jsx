@@ -1,18 +1,23 @@
 import { MdStars } from "react-icons/md";
 import RestaurantDropdown from "./RestaurantDropdown";
 import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 
 const RestaurantMenu = () => {
   const [mainResData, setMainResData] = useState([]);
   const [dropdownData, setDropdownData] = useState([]);
+
+  const { resId } = useParams();
+
   useEffect(() => {
     fetchResData();
   }, []);
 
   const fetchResData = async () => {
     const apiData = await fetch(
-      "https://www.swiggy.com/dapi/menu/pl?page-type=REGULAR_MENU&complete-menu=true&lat=18.5204303&lng=73.8567437&restaurantId=506982&catalog_qa=undefined"
+      `https://www.swiggy.com/dapi/menu/pl?page-type=REGULAR_MENU&complete-menu=true&lat=18.5204303&lng=73.8567437&restaurantId=${resId}&catalog_qa=undefined`
     );
+
 
     const apiDataJson = await apiData.json();
     setMainResData(apiDataJson?.data?.cards[2]?.card?.card?.info);
