@@ -17,8 +17,12 @@ const FoodItems = () => {
   }, []);
 
   const fetchResData = async () => {
+    const apiUrl = encodeURIComponent(
+      "https://www.swiggy.com/dapi/restaurants/list/v5?lat=18.52110&lng=73.85020&is-seo-homepage-enabled=true&page_type=DESKTOP_WEB_LISTING"
+    );
+
     const apiData = await fetch(
-      "https://thingproxy.freeboard.io/fetch/https://www.swiggy.com/dapi/restaurants/list/v5?lat=18.52110&lng=73.85020&is-seo-homepage-enabled=true&page_type=DESKTOP_WEB_LISTING"
+      `https://cors-resolvepf.netlify.app/.netlify/functions/cors-proxy?url=${apiUrl}`
     );
 
     const apiDataJson = await apiData.json();
@@ -50,7 +54,9 @@ const FoodItems = () => {
   return (
     <div className=" mt-20 flex p-1 flex-col h-full w-[80%] gap-5 border-b-2 border-b-gray-200">
       <div className="flex justify-between">
-        <p className="p-2 text-2xl font-semibold">{listOfFood.length === 0 ? "Loading...": heading}</p>
+        <p className="p-2 text-2xl font-semibold">
+          {listOfFood.length === 0 ? "Loading..." : heading}
+        </p>
         <div className="flex items-center text-3xl gap-2">
           <FaRegArrowAltCircleLeft
             onClick={handlePrev}
