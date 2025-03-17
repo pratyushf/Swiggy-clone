@@ -1,7 +1,7 @@
 import { RxCross2 } from "react-icons/rx";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { toggleLoginDropdown } from "../authSlice";
+import { toggleLoginDropdown } from "../utils/authSlice";
 
 const Login = () => {
   const [showRegister, setShowRegister] = useState(false);

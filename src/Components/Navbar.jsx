@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { toggleLoginDropdown } from "../authSlice";
+import { toggleLoginDropdown } from "../utils/authSlice";
 import { IoSearch, IoBagSharp, IoHelpBuoyOutline } from "react-icons/io5";
 import { BiSolidOffer } from "react-icons/bi";
 import { FaUserLarge } from "react-icons/fa6";

@@ -1,11 +1,10 @@
-
 import FoodItems from "./FoodItems";
 import TopRestaurants from "./TopRestaurants";
 import MainRestaurants from "./MainRestaurants";
 import Footer from "./Footer";
 import Login from "./Login";
 import { useSelector, useDispatch } from "react-redux";
-import { closeLoginDropdown } from "../authSlice";
+import { closeLoginDropdown } from "../utils/authSlice";
 
 function Homepage() {
   const loginDropdown = useSelector((state) => state.auth.loginDropdown);
