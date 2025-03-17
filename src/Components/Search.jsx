@@ -17,9 +17,14 @@ const Search = () => {
       }
 
       try {
-        const apiData = await fetch(
+        const apiUrl = encodeURIComponent(
           `https://thingproxy.freeboard.io/fetch/https://www.swiggy.com/dapi/restaurants/search/suggest?lat=18.52110&lng=73.85020&str=${resInput}&trackingId=null&includeIMItem=true`
         );
+
+        const apiData = await fetch(
+          `https://cors-resolvepf.netlify.app/.netlify/functions/cors-proxy?url=${apiUrl}`
+        );
+
         const apiDataJson = await apiData.json();
         setSearchRes(apiDataJson?.data?.suggestions || []);
       } catch (error) {
@@ -54,7 +59,8 @@ const Search = () => {
                 try {
                   if (unit.metadata) {
                     const parsedMetadata = JSON.parse(unit.metadata);
-                    primaryRestaurantId = parsedMetadata?.data?.primaryRestaurantId;
+                    primaryRestaurantId =
+                      parsedMetadata?.data?.primaryRestaurantId;
                   }
                 } catch (error) {
                   console.error("Error parsing metadata:", error);
@@ -62,7 +68,9 @@ const Search = () => {
 
                 return (
                   <div
-                    onClick={() => navigate(`/restaurantMenu/${primaryRestaurantId}`)}
+                    onClick={() =>
+                      navigate(`/restaurantMenu/${primaryRestaurantId}`)
+                    }
                     key={unit.restaurantId || primaryRestaurantId}
                     className="flex items-center justify-between p-3 hover:bg-orange-100 transition duration-200 rounded-md cursor-pointer"
                   >
@@ -73,8 +81,12 @@ const Search = () => {
                         alt={unit?.text || "Food Item"}
                       />
                       <div className="flex flex-col">
-                        <p className="text-gray-800 font-medium">{unit?.text}</p>
-                        <p className="text-gray-500 text-sm">{unit?.subCategory}</p>
+                        <p className="text-gray-800 font-medium">
+                          {unit?.text}
+                        </p>
+                        <p className="text-gray-500 text-sm">
+                          {unit?.subCategory}
+                        </p>
                       </div>
                     </div>
 

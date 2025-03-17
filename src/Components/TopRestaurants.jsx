@@ -18,8 +18,12 @@ const TopRestaurants = () => {
   }, []);
 
   const fetchResData = async () => {
-    const apiData = await fetch(
+    const apiUrl = encodeURIComponent(
       "https://thingproxy.freeboard.io/fetch/https://www.swiggy.com/dapi/restaurants/list/v5?lat=18.52110&lng=73.85020&is-seo-homepage-enabled=true&page_type=DESKTOP_WEB_LISTING"
+    );
+
+    const apiData = await fetch(
+      `https://cors-resolvepf.netlify.app/.netlify/functions/cors-proxy?url=${apiUrl}`
     );
 
     const apiDataJson = await apiData.json();
@@ -44,7 +48,9 @@ const TopRestaurants = () => {
   return (
     <div className="w-[80%] m-3 p-1">
       <div className="flex justify-between">
-        <p className="p-2 text-2xl font-semibold">{topResData.length === 0 ? "Loading...": heading}</p>
+        <p className="p-2 text-2xl font-semibold">
+          {topResData.length === 0 ? "Loading..." : heading}
+        </p>
         <div className="flex items-center text-3xl gap-2">
           <FaRegArrowAltCircleLeft
             className={`cursor-pointer hover:text-orange-600 ${
