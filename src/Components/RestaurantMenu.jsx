@@ -13,7 +13,7 @@ const RestaurantMenu = () => {
     const fetchResData = async () => {
       try {
         const response = await fetch(
-          `https://www.swiggy.com/dapi/menu/pl?page-type=REGULAR_MENU&complete-menu=true&lat=18.5204303&lng=73.8567437&restaurantId=${resId}&catalog_qa=undefined`
+          `https://thingproxy.freeboard.io/fetch/https://www.swiggy.com/dapi/menu/pl?page-type=REGULAR_MENU&complete-menu=true&lat=18.5204303&lng=73.8567437&restaurantId=${resId}&catalog_qa=undefined`
         );
         const apiDataJson = await response.json();
         setMainResData(apiDataJson?.data?.cards[2]?.card?.card?.info || {});

@@ -12,7 +12,7 @@ const Cart = () => {
 
     //   <button className=" p-3 text-xl bg-green-600 text-white">See restaurants near you</button>
     // </div>
-    <div className=" pt-20 flex bg-gray-100 w-full h-full">
+    <div className=" pt-20 flex bg-gray-100 w-full h-[100vh]">
       <CartAddress/>
       <CartDetails/>
     </div>
