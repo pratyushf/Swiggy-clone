@@ -18,7 +18,7 @@ const Search = () => {
 
       try {
         const apiUrl = encodeURIComponent(
-          `https://thingproxy.freeboard.io/fetch/https://www.swiggy.com/dapi/restaurants/search/suggest?lat=18.52110&lng=73.85020&str=${resInput}&trackingId=null&includeIMItem=true`
+          `https://www.swiggy.com/dapi/restaurants/search/suggest?lat=18.52110&lng=73.85020&str=${resInput}&trackingId=null&includeIMItem=true`
         );
 
         const apiData = await fetch(

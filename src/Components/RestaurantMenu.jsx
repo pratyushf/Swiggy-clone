@@ -12,13 +12,19 @@ const RestaurantMenu = () => {
   useEffect(() => {
     const fetchResData = async () => {
       try {
-        const response = await fetch(
-          `https://thingproxy.freeboard.io/fetch/https://www.swiggy.com/dapi/menu/pl?page-type=REGULAR_MENU&complete-menu=true&lat=18.5204303&lng=73.8567437&restaurantId=${resId}&catalog_qa=undefined`
+        const apiUrl = encodeURIComponent(
+          `https://www.swiggy.com/dapi/menu/pl?page-type=REGULAR_MENU&complete-menu=true&lat=18.5204303&lng=73.8567437&restaurantId=${resId}&catalog_qa=undefined`
         );
-        const apiDataJson = await response.json();
+
+        const apiData = await fetch(
+          `https://cors-resolvepf.netlify.app/.netlify/functions/cors-proxy?url=${apiUrl}`
+        );
+
+        const apiDataJson = await apiData.json();
         setMainResData(apiDataJson?.data?.cards[2]?.card?.card?.info || {});
         setDropdownData(
-          apiDataJson?.data?.cards[4]?.groupedCard?.cardGroupMap?.REGULAR?.cards || []
+          apiDataJson?.data?.cards[4]?.groupedCard?.cardGroupMap?.REGULAR
+            ?.cards || []
         );
       } catch (error) {
         console.error("Error fetching restaurant data:", error);
@@ -63,7 +69,9 @@ const RestaurantMenu = () => {
             <p className="font-semibold">Outlet</p>
             <p>{areaName || "Unknown"}</p>
           </div>
-          <p className="font-semibold">{sla?.slaString || "Delivery info unavailable"}</p>
+          <p className="font-semibold">
+            {sla?.slaString || "Delivery info unavailable"}
+          </p>
         </div>
       </div>
 
