@@ -1,5 +1,5 @@
-import { BsCartXFill } from "react-icons/bs";
-import { useState } from "react";
+// import { BsCartXFill } from "react-icons/bs";
+// import { useState } from "react";
 import CartAddress from "./CartAddress";
 import CartDetails from "./CartDetails";
 
@@ -12,9 +12,9 @@ const Cart = () => {
 
     //   <button className=" p-3 text-xl bg-green-600 text-white">See restaurants near you</button>
     // </div>
-    <div className=" pt-20 flex bg-gray-100 w-full h-[100vh]">
-      <CartAddress/>
-      <CartDetails/>
+    <div className="pt-20 flex flex-col md:flex-row bg-gray-100 w-full min-h-screen">
+      <CartAddress />
+      <CartDetails />
     </div>
   );
 };

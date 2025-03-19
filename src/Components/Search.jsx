@@ -1,6 +1,7 @@
 import { IoSearchOutline } from "react-icons/io5";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux"; // Import useSelector
 
 const Search = () => {
   const [resInput, setResInput] = useState("");
@@ -9,16 +10,20 @@ const Search = () => {
   const baseImageUrl =
     "https://media-assets.swiggy.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_288,h_360/";
 
+  // Get location from Redux store
+  const latitude = useSelector((state) => state.location.latitude);
+  const longitude = useSelector((state) => state.location.longitude);
+
   useEffect(() => {
     const fetchResData = async () => {
-      if (!resInput) {
-        setSearchRes([]); // Clear results when input is empty
+      if (!resInput || !latitude || !longitude) {
+        setSearchRes([]);
         return;
       }
 
       try {
         const apiUrl = encodeURIComponent(
-          `https://www.swiggy.com/dapi/restaurants/search/suggest?lat=18.52110&lng=73.85020&str=${resInput}&trackingId=null&includeIMItem=true`
+          `https://www.swiggy.com/dapi/restaurants/search/suggest?lat=${latitude}&lng=${longitude}&str=${resInput}&trackingId=null&includeIMItem=true`
         );
 
         const apiData = await fetch(
@@ -33,11 +38,11 @@ const Search = () => {
     };
 
     fetchResData();
-  }, [resInput]);
+  }, [resInput, latitude, longitude]);
 
   return (
     <div className="flex flex-col mt-20 h-[85vh] w-full items-center">
-      <div className="w-2/5 h-auto p-7 bg-white shadow-lg rounded-lg">
+      <div className="w-full md:w-2/5 h-auto p-6 bg-white shadow-lg rounded-lg">
         <div className="relative">
           <input
             placeholder="Search for Restaurant and Food"
@@ -51,11 +56,10 @@ const Search = () => {
 
         {searchRes.length > 0 && (
           <div className="mt-4">
-            <p className="font-semibold text-lg">Recent Searches</p>
+            <p className="font-semibold text-lg">Search Results</p>
             <div className="flex flex-col w-full p-2 rounded-md border border-gray-200 shadow-sm bg-gray-50 mt-2">
               {searchRes.map((unit) => {
                 let primaryRestaurantId = null;
-
                 try {
                   if (unit.metadata) {
                     const parsedMetadata = JSON.parse(unit.metadata);
@@ -72,15 +76,15 @@ const Search = () => {
                       navigate(`/restaurantMenu/${primaryRestaurantId}`)
                     }
                     key={unit.restaurantId || primaryRestaurantId}
-                    className="flex items-center justify-between p-3 hover:bg-orange-100 transition duration-200 rounded-md cursor-pointer"
+                    className="flex flex-col sm:flex-row items-center justify-between p-3 hover:bg-orange-100 transition duration-200 rounded-md cursor-pointer"
                   >
-                    <div className="flex items-center">
+                    <div className="flex items-center gap-3">
                       <img
-                        className="rounded-xl h-20 w-20 m-4 cursor-pointer transition-transform hover:scale-105"
+                        className="rounded-xl h-16 w-16 sm:h-20 sm:w-20 cursor-pointer transition-transform hover:scale-105"
                         src={`${baseImageUrl}${unit.cloudinaryId}`}
                         alt={unit?.text || "Food Item"}
                       />
-                      <div className="flex flex-col">
+                      <div className="flex flex-col text-center sm:text-left">
                         <p className="text-gray-800 font-medium">
                           {unit?.text}
                         </p>
@@ -89,8 +93,7 @@ const Search = () => {
                         </p>
                       </div>
                     </div>
-
-                    <IoSearchOutline className="text-gray-600" />
+                    <IoSearchOutline className="text-gray-600 hidden sm:block" />
                   </div>
                 );
               })}
@@ -98,13 +101,14 @@ const Search = () => {
           </div>
         )}
 
+        {/* Popular Cuisines */}
         <div className="mt-6">
           <p className="font-semibold text-lg">Popular Cuisines</p>
-          <div className="grid grid-cols-2 gap-2 mt-2">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 mt-2">
             {["Indian", "Chinese", "Italian", "Mexican"].map((cuisine) => (
               <span
                 key={cuisine}
-                className="px-4 py-2 text-sm bg-orange-100 text-orange-700 rounded-full cursor-pointer hover:bg-orange-200 transition"
+                className="px-4 py-2 text-sm bg-orange-100 text-orange-700 rounded-full cursor-pointer hover:bg-orange-200 transition text-center"
               >
                 {cuisine}
               </span>

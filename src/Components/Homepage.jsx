@@ -1,14 +1,31 @@
+import { useSelector, useDispatch } from "react-redux";
+import { closeLoginDropdown } from "../utils/authSlice";
+import { setLocation } from "../utils/locationSlice"; // Import action
+import { useEffect } from "react";
 import FoodItems from "./FoodItems";
 import TopRestaurants from "./TopRestaurants";
 import MainRestaurants from "./MainRestaurants";
 import Footer from "./Footer";
 import Login from "./Login";
-import { useSelector, useDispatch } from "react-redux";
-import { closeLoginDropdown } from "../utils/authSlice";
 
 function Homepage() {
   const loginDropdown = useSelector((state) => state.auth.loginDropdown);
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        dispatch(
+          setLocation({
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude,
+          })
+        );
+      },
+      (error) => console.error("Error getting location:", error),
+      { enableHighAccuracy: true }
+    );
+  }, [dispatch]);
 
   return (
     <div>

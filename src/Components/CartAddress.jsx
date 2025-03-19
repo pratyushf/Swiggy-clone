@@ -7,50 +7,50 @@ const esTime = 35;
 
 const CartAddress = () => {
   return (
-    <div className=" m-8 p-9 w-2/3 bg-white h-fit">
-      <p className=" font-bold text-2xl">Select Address</p>
-      <p className=" text-lg">You have a saved address in this location</p>
-      <div className=" flex gap-5 w-full">
-        <div className=" bg-white flex gap-3 border border-gray-400 p-3 w-1/2 h-fit m-4">
+    <div className="m-4 md:m-8 p-6 md:p-9 md:w-2/3 bg-white w-fit h-fit shadow-md rounded-lg">
+      <p className="font-bold text-2xl">Select Address</p>
+      <p className="text-lg text-gray-600">You have a saved address in this location</p>
+      
+      <div className="flex flex-col md:flex-row gap-6 mt-6">
+        {/* Saved Address */}
+        <div className="bg-white flex gap-4 border border-gray-300 p-4 w-full md:w-1/2 rounded-lg shadow-sm">
+          <PiShoppingBagThin className="text-4xl text-gray-700" />
           <div>
-            <PiShoppingBagThin className=" text-4xl" />
-          </div>
-          <div>
-            <p className=" text-lg font-semibold">{addressType}</p>
-            <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit.
-              Molestiae, vitae omnis? Numquam amet praesentium officia sed
-              maiores accusamus, voluptate.
+            <p className="text-lg font-semibold text-gray-800">{addressType}</p>
+            <p className="text-gray-600 text-sm">
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestiae, vitae omnis? 
+              Numquam amet praesentium officia sed maiores accusamus, voluptate.
             </p>
-            <p className=" font-semibold">{esTime} mins</p>
-            <button className=" cursor-pointer font-semibold my-2 rounded-lg p-2 bg-green-500 text-white">
+            <p className="font-semibold text-green-600 mt-2">{esTime} mins</p>
+            <button className="mt-3 w-full md:w-auto px-4 py-2 font-semibold rounded-lg bg-green-500 text-white hover:bg-green-600 transition">
               Use This
             </button>
           </div>
         </div>
-        <div className=" bg-white flex gap-3 border border-gray-400 p-3  w-1/2 h-fit m-4">
+        
+        {/* Add New Address */}
+        <div className="bg-white flex gap-4 border border-gray-300 p-4 w-full md:w-1/2 rounded-lg shadow-sm">
+          <CiLocationOn className="text-4xl text-gray-700" />
           <div>
-            <CiLocationOn className=" text-4xl" />
-          </div>
-
-          <div>
-            <p className=" text-lg font-semibold">{addressType}</p>
-            <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit.
-              Molestiae, vitae omnis? Numquam amet praesentium officia sed
-              maiores accusamus, voluptate.
+            <p className="text-lg font-semibold text-gray-800">Add New Address</p>
+            <p className="text-gray-600 text-sm">
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestiae, vitae omnis? 
+              Numquam amet praesentium officia sed maiores accusamus, voluptate.
             </p>
-            <button className=" font-semibold my-2 rounded-lg mt-6 p-2 text-green-500 bg-white border border-green-500 cursor-pointer">
+            <button className="mt-3 w-full md:w-auto px-4 py-2 font-semibold text-green-500 border border-green-500 rounded-lg hover:bg-green-50 transition">
               Add New
             </button>
           </div>
         </div>
       </div>
-      <div className=" mt-10 w-full flex justify-center">
+
+      {/* Payment Section */}
+      <div className="mt-10 w-full flex justify-center">
         <CartPayment />
       </div>
     </div>
   );
 };
+
 
 export default CartAddress;

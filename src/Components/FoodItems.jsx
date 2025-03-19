@@ -1,8 +1,9 @@
+import { useState, useEffect } from "react";
+import { useSelector } from "react-redux"; // Import Redux hook
 import {
   FaRegArrowAltCircleLeft,
   FaRegArrowAltCircleRight,
 } from "react-icons/fa";
-import { useState, useEffect } from "react";
 import ShimmerForFI from "./ShimmerForFI";
 
 const baseImageUrl =
@@ -12,13 +13,18 @@ const FoodItems = () => {
   const [listOfFood, setListOfFood] = useState([]);
   const [heading, setHeading] = useState("");
 
-  useEffect(() => {
-    fetchResData();
-  }, []);
+  const latitude = useSelector((state) => state.location.latitude);
+  const longitude = useSelector((state) => state.location.longitude);
 
-  const fetchResData = async () => {
+  useEffect(() => {
+    if (latitude && longitude) {
+      fetchResData(latitude, longitude);
+    }
+  }, [latitude, longitude]);
+
+  const fetchResData = async (lat, lng) => {
     const apiUrl = encodeURIComponent(
-      "https://www.swiggy.com/dapi/restaurants/list/v5?lat=18.52110&lng=73.85020&is-seo-homepage-enabled=true&page_type=DESKTOP_WEB_LISTING"
+      `https://www.swiggy.com/dapi/restaurants/list/v5?lat=${lat}&lng=${lng}&is-seo-homepage-enabled=true&page_type=DESKTOP_WEB_LISTING`
     );
 
     const apiData = await fetch(
@@ -31,15 +37,15 @@ const FoodItems = () => {
   };
 
   const [startIndex, setStartIndex] = useState(0);
-  const itemsPerPage = 5; // Number of visible items
-  const shiftValue = 3; // Number of items to shift per click
-  const maxIndex = listOfFood.length - itemsPerPage; // Prevent overflow
+  const itemsPerPage = 3;
+  const shiftValue = 3;
+  const maxIndex = listOfFood.length - itemsPerPage;
 
   const handleNext = () => {
     if (startIndex + shiftValue <= maxIndex) {
       setStartIndex(startIndex + shiftValue);
     } else {
-      setStartIndex(maxIndex); // Stop at last page
+      setStartIndex(maxIndex);
     }
   };
 
@@ -47,27 +53,31 @@ const FoodItems = () => {
     if (startIndex - shiftValue >= 0) {
       setStartIndex(startIndex - shiftValue);
     } else {
-      setStartIndex(0); // Stop at first page
+      setStartIndex(0);
     }
   };
 
   return (
-    <div className=" mt-20 flex p-1 flex-col h-full w-[80%] gap-5 border-b-2 border-b-gray-200">
+    <div className="mt-20 flex p-1 flex-col h-full w-[90%] md:w-[80%] gap-5 border-b-2 border-b-gray-200">
       <div className="flex justify-between">
-        <p className="p-2 text-2xl font-semibold">
+        <p className="p-2 text-xl md:text-2xl font-semibold">
           {listOfFood.length === 0 ? "Loading..." : heading}
         </p>
-        <div className="flex items-center text-3xl gap-2">
+        <div className="flex items-center text-2xl md:text-3xl gap-2">
           <FaRegArrowAltCircleLeft
-            onClick={handlePrev}
+            onClick={startIndex === 0 ? null : handlePrev}
             className={`cursor-pointer hover:text-orange-600 ${
-              startIndex === 0 ? "opacity-50 cursor-not-allowed" : ""
+              startIndex === 0
+                ? "opacity-50 cursor-not-allowed pointer-events-none"
+                : ""
             }`}
           />
           <FaRegArrowAltCircleRight
-            onClick={handleNext}
+            onClick={startIndex >= maxIndex ? null : handleNext}
             className={`cursor-pointer hover:text-orange-600 ${
-              startIndex >= maxIndex ? "opacity-50 cursor-not-allowed" : ""
+              startIndex >= maxIndex
+                ? "opacity-50 cursor-not-allowed pointer-events-none"
+                : ""
             }`}
           />
         </div>
@@ -86,7 +96,7 @@ const FoodItems = () => {
             {listOfFood.map((e) => (
               <img
                 key={e.id}
-                className="h-42 w-40 m-4 cursor-pointer transition-transform hover:scale-105"
+                className="h-32 w-32 md:h-42 md:w-40 m-2 md:m-4 cursor-pointer transition-transform hover:scale-105"
                 src={`${baseImageUrl}${e.imageId}`}
                 alt={e?.action.text || "Food Item"}
               />

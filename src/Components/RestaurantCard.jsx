@@ -25,11 +25,11 @@ const RestaurantCard = ({ restaurant }) => {
     >
       <div className="relative">
         <img
-          className="h-60 rounded-xl w-70"
+          className="h-50 rounded-xl w-60"
           src={`https://media-assets.swiggy.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_660/${cloudinaryImageId}`}
           alt={name}
         />
-        <p className="w-70 absolute bottom-0.5 rounded-b-xl text-2xl px-1 pl-3 font-extrabold text-white bg-[rgb(4,2,2)]/60">
+        <p className="w-60 absolute bottom-0.5 rounded-b-xl text-xl px-1 pl-3 font-extrabold text-white bg-[rgb(4,2,2)]/60">
           {aggregatedDiscountInfoV3
             ? `${aggregatedDiscountInfoV3.header} ${
                 aggregatedDiscountInfoV3.subHeader || ""

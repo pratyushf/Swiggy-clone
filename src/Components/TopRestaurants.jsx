@@ -1,9 +1,7 @@
 import RestaurantCard from "./RestaurantCard";
-import {
-  FaRegArrowAltCircleLeft,
-  FaRegArrowAltCircleRight,
-} from "react-icons/fa";
+import { FaRegArrowAltCircleLeft, FaRegArrowAltCircleRight } from "react-icons/fa";
 import { useState, useEffect } from "react";
+import { useSelector } from "react-redux"; // Import useSelector
 import ShimmerForTR from "./ShimmerForTR";
 
 const ITEMS_PER_PAGE = 4; // Number of restaurants to show at a time
@@ -13,13 +11,19 @@ const TopRestaurants = () => {
   const [heading, setHeading] = useState("");
   const [currentIndex, setCurrentIndex] = useState(0);
 
-  useEffect(() => {
-    fetchResData();
-  }, []);
+  // Get location from Redux
+  const latitude = useSelector((state) => state.location.latitude);
+  const longitude = useSelector((state) => state.location.longitude);
 
-  const fetchResData = async () => {
+  useEffect(() => {
+    if (latitude && longitude) {
+      fetchResData(latitude, longitude);
+    }
+  }, [latitude, longitude]);
+
+  const fetchResData = async (lat, lng) => {
     const apiUrl = encodeURIComponent(
-      "https://www.swiggy.com/dapi/restaurants/list/v5?lat=18.52110&lng=73.85020&is-seo-homepage-enabled=true&page_type=DESKTOP_WEB_LISTING"
+      `https://www.swiggy.com/dapi/restaurants/list/v5?lat=${lat}&lng=${lng}&page_type=DESKTOP_WEB_LISTING`
     );
 
     const apiData = await fetch(
@@ -68,17 +72,14 @@ const TopRestaurants = () => {
           />
         </div>
       </div>
-      {topResData.length == 0 ? (
-        <ShimmerForTR length={4}></ShimmerForTR>
+      {topResData.length === 0 ? (
+        <ShimmerForTR length={4} />
       ) : (
-        <div className="flex justify-around flex-wrap">
+        <div className="flex justify-between flex-wrap">
           {topResData
             .slice(currentIndex, currentIndex + ITEMS_PER_PAGE)
             .map((restaurant) => (
-              <RestaurantCard
-                key={restaurant.info.id}
-                restaurant={restaurant}
-              />
+              <RestaurantCard key={restaurant.info.id} restaurant={restaurant} />
             ))}
         </div>
       )}

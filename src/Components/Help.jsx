@@ -4,7 +4,7 @@ const Help = () => {
   const [helpTopic, setHelpTopic] = useState("Partner Onboarding");
 
   return (
-    <div className="flex flex-col bg-orange-500 h-[92vh] overflow-hidden w-full p-30">
+    <div className="flex flex-col bg-orange-400 h-[100vh] overflow-hidden w-full p-30">
       <p className="text-white text-3xl font-bold ml-10">Help & Support</p>
       <p className="text-white text-2xl ml-10">
         Lets take a step ahead and help you better.
