@@ -1,11 +1,13 @@
 import RestaurantCard from "./RestaurantCard";
 import { useState, useEffect } from "react";
-import { useSelector } from "react-redux"; // Import useSelector
+import { useSelector, useDispatch } from "react-redux"; // Import useSelector
 import ShimmerForTR from "./ShimmerForTR";
+import { setCity } from "../utils/locationSlice";
 
 const MainRestaurants = () => {
   const [mainResData, setMainResData] = useState([]);
   const [header, setHeader] = useState("Loading");
+  const dispatch = useDispatch();
 
   // Get user's location from Redux
   const latitude = useSelector((state) => state.location.latitude);
@@ -21,18 +23,26 @@ const MainRestaurants = () => {
     const apiUrl = encodeURIComponent(
       `https://www.swiggy.com/dapi/restaurants/list/v5?lat=${lat}&lng=${lng}&is-seo-homepage-enabled=true&page_type=DESKTOP_WEB_LISTING`
     );
-
+  
     const apiData = await fetch(
       `https://cors-resolvepf.netlify.app/.netlify/functions/cors-proxy?url=${apiUrl}`
     );
-
+  
     const apiDataJson = await apiData.json();
-    setMainResData(
+  
+    const fetchedHeader = apiDataJson?.data?.cards[2]?.card?.card?.title;
+    const fetchedRestaurants =
       apiDataJson?.data?.cards[4]?.card?.card?.gridElements?.infoWithStyle
-        ?.restaurants
-    );
-    setHeader(apiDataJson?.data?.cards[2]?.card?.card?.title);
+        ?.restaurants;
+  
+    setMainResData(fetchedRestaurants);
+    setHeader(fetchedHeader); // Set header first
+    
+    if (fetchedHeader) {
+      dispatch(setCity(fetchedHeader.slice(41))); // Dispatch AFTER setting header
+    }
   };
+  
 
   return (
     <div className="w-[80%] m-2">

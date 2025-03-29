@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { toggleLoginDropdown } from "../utils/authSlice";
+import { toggleLoginDropdown, setLoggedIn } from "../utils/authSlice";
 import {
   IoSearch,
   IoBagSharp,
@@ -25,6 +25,9 @@ const Navbar = () => {
     (total, item) => total + item.quantity,
     0
   );
+  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
+  const userData = useSelector((state) => state.auth.user);
+  const city = useSelector((state) => state.location.city);
 
   return (
     <nav className="fixed h-[9vh] z-50 top-0 left-0 w-full flex items-center bg-white shadow-md text-gray-800">
@@ -52,9 +55,7 @@ const Navbar = () => {
           <Link to="/" className="hover:text-orange-500">
             Home
           </Link>
-          <p className="truncate cursor-pointer hover:text-gray-600">
-            Login to select Address..
-          </p>
+          <p className="truncate cursor-pointer hover:text-gray-600">{city}</p>
           <p className="flex items-center gap-1.5 cursor-pointer hover:text-orange-500">
             <IoBagSharp className="text-2xl" /> Swiggy Corporate
           </p>
@@ -78,13 +79,14 @@ const Navbar = () => {
           <div
             onMouseEnter={() => setDropdownOpen(true)}
             onMouseLeave={() => setDropdownOpen(false)}
-            className="relative"
+            className="relative py-3"
           >
             <p
               onClick={() => dispatch(toggleLoginDropdown())}
               className="flex items-center gap-1.5 cursor-pointer hover:text-orange-500"
             >
-              <FaUserLarge className="text-xl" /> Sign In
+              <FaUserLarge className="text-xl" />{" "}
+              {isLoggedIn ? userData?.name.split(" ")[0] : "Sign In"}
             </p>
             {isDropdownOpen && (
               <div className="absolute left-1/2 -translate-x-1/2 mt-2 w-48 bg-white border shadow-lg flex flex-col border-t-2 border-t-orange-500">
@@ -100,8 +102,13 @@ const Navbar = () => {
                 <p className="px-4 py-2 cursor-pointer hover:font-semibold">
                   Favourites
                 </p>
-                <p className="px-4 py-2 cursor-pointer hover:font-semibold">
-                  Logout
+                <p
+                  onClick={() => {
+                    dispatch(setLoggedIn(false));
+                  }}
+                  className="px-4 py-2 cursor-pointer hover:font-semibold"
+                >
+                  {isLoggedIn ? "Logout" : ""}
                 </p>
               </div>
             )}

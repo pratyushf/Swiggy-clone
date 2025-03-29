@@ -7,9 +7,13 @@ import TopRestaurants from "./TopRestaurants";
 import MainRestaurants from "./MainRestaurants";
 import Footer from "./Footer";
 import Login from "./Login";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function Homepage() {
   const loginDropdown = useSelector((state) => state.auth.loginDropdown);
+  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
+  const isRegister = useSelector((state) => state.auth.isRegistered);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -27,8 +31,27 @@ function Homepage() {
     );
   }, [dispatch]);
 
+  useEffect(() => {
+    if (isLoggedIn) {
+      toast.success("Login successful!");
+    } else {
+      const wasLoggedIn = localStorage.getItem("wasLoggedIn");
+      if (wasLoggedIn === "true") {
+        toast.success("Logged out Successfully!");
+      }
+    }
+    localStorage.setItem("wasLoggedIn", isLoggedIn);
+  }, [isLoggedIn]);
+
+  useEffect(() => {
+    if (isRegister) {
+      toast.success("Registration successful!");
+    }
+  }, [isRegister]);
+
   return (
     <div>
+      <ToastContainer position="top-left" autoClose={3000} />
       <div className="w-screen m-0 p-0 bg-gray-50 flex flex-col">
         <div onClick={() => dispatch(closeLoginDropdown())}>
           <div className="flex justify-center items-center h-2/5">
