@@ -30,6 +30,23 @@ const Login = () => {
     }
   }, [isLoggedIn, dispatch]);
 
+  const validateInput = (type) => {
+    if (type === "login") {
+      const { email, password } = loginData;
+      if (!email || !password) return "All fields are required.";
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return "Invalid email format.";
+      if (password.length < 6) return "Password must be at least 6 characters long.";
+    } else {
+      const { name, email, phone, password } = registerData;
+      if (!name || !email || !phone || !password) return "All fields are required.";
+      if (!/^[a-zA-Z ]+$/.test(name)) return "Name should contain only letters and spaces.";
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return "Invalid email format.";
+      if (!/^[0-9]{10}$/.test(phone)) return "Phone number must be exactly 10 digits.";
+      if (password.length < 6) return "Password must be at least 6 characters long.";
+    }
+    return "";
+  };
+
   const handleChange = (e, type) => {
     const { name, value } = e.target;
     if (type === "login") {
@@ -40,22 +57,20 @@ const Login = () => {
   };
 
   const handleLogin = async () => {
-    setErrorMessage("");
-    if (!loginData.email || !loginData.password) {
-      setErrorMessage("All fields are required.");
+    const error = validateInput("login");
+    if (error) {
+      setErrorMessage(error);
       return;
     }
     try {
-      const response = await fetch("http://localhost:5000/api/users/login", {
+      const response = await fetch("https://swiggy-backend-135h.onrender.com/api/users/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(loginData),
       });
       const data = await response.json();
       if (!response.ok) {
-        setErrorMessage(
-          data.message || "Invalid credentials. Please try again."
-        );
+        setErrorMessage(data.message || "Invalid credentials. Please try again.");
         return;
       }
       localStorage.setItem("token", data.token);
@@ -68,30 +83,23 @@ const Login = () => {
   };
 
   const handleRegister = async () => {
-    setErrorMessage("");
-    if (
-      !registerData.name ||
-      !registerData.email ||
-      !registerData.phone ||
-      !registerData.password
-    ) {
-      setErrorMessage("All fields are required.");
+    const error = validateInput("register");
+    if (error) {
+      setErrorMessage(error);
       return;
     }
     try {
-      const response = await fetch("http://localhost:5000/api/users/register", {
+      const response = await fetch("https://swiggy-backend-135h.onrender.com/api/users/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(registerData),
       });
       const data = await response.json();
       if (!response.ok) {
-        setErrorMessage(
-          data.message || "Registration failed. Please try again."
-        );
+        setErrorMessage(data.message || "Registration failed. Please try again.");
         return;
       }
-      dispatch(setRegister(true))
+      dispatch(setRegister(true));
       dispatch(closeLoginDropdown());
     } catch (error) {
       setErrorMessage("Something went wrong! Please try again.");
@@ -100,96 +108,31 @@ const Login = () => {
 
   return (
     <div className="flex flex-col h-screen p-10 gap-3 w-2/3">
-      <RxCross2
-        onClick={() => dispatch(toggleLoginDropdown())}
-        className="text-2xl cursor-pointer"
-      />
+      <RxCross2 onClick={() => dispatch(toggleLoginDropdown())} className="text-2xl cursor-pointer" />
       <div className="flex gap-10">
         <div className="flex flex-col w-1/2">
-          <p className="font-semibold text-3xl mb-1">
-            {isRegistering ? "Register" : "Login"}
-          </p>
-          <p
-            onClick={() => setIsRegistering(!isRegistering)}
-            className="text-sm text-orange-600 cursor-pointer"
-          >
+          <p className="font-semibold text-3xl mb-1">{isRegistering ? "Register" : "Login"}</p>
+          <p onClick={() => setIsRegistering(!isRegistering)} className="text-sm text-orange-600 cursor-pointer">
             {isRegistering ? "Login to your account" : "Create an account"}
           </p>
         </div>
-        <img
-          className="h-[120px]"
-          src="https://media-assets.swiggy.com/swiggy/image/upload/fl_lossy,f_auto,q_auto/Image-login_btpq7r"
-          alt="Login_Logo"
-        />
       </div>
 
       {isRegistering ? (
         <>
-          <input
-            className="p-2 border border-gray-300 h-12"
-            type="text"
-            name="name"
-            placeholder="Name"
-            onChange={(e) => handleChange(e, "register")}
-          />
-          <input
-            className="p-2 border border-gray-300 h-12"
-            type="email"
-            name="email"
-            placeholder="Email"
-            onChange={(e) => handleChange(e, "register")}
-          />
-          <input
-            className="p-2 border border-gray-300 h-12"
-            type="text"
-            name="phone"
-            placeholder="Phone Number"
-            onChange={(e) => handleChange(e, "register")}
-          />
-          <input
-            className="p-2 border border-gray-300 h-12"
-            type="password"
-            name="password"
-            placeholder="Password"
-            onChange={(e) => handleChange(e, "register")}
-            autoComplete="off"
-          />
-          {errorMessage && (
-            <p className="text-red-500 text-sm mt-1">{errorMessage}</p>
-          )}
-          <button
-            className="bg-orange-600 h-12 text-white cursor-pointer mt-2"
-            onClick={handleRegister}
-          >
-            Register
-          </button>
+          <input className="p-2 border h-12" type="text" name="name" placeholder="Name" onChange={(e) => handleChange(e, "register")} />
+          <input className="p-2 border h-12" type="email" name="email" placeholder="Email" onChange={(e) => handleChange(e, "register")} />
+          <input className="p-2 border h-12" type="text" name="phone" placeholder="Phone Number" onChange={(e) => handleChange(e, "register")} />
+          <input className="p-2 border h-12" type="password" name="password" placeholder="Password" onChange={(e) => handleChange(e, "register")} autoComplete="off" />
+          {errorMessage && <p className="text-red-500 text-sm mt-1">{errorMessage}</p>}
+          <button className="bg-orange-600 h-12 text-white cursor-pointer mt-2" onClick={handleRegister}>Register</button>
         </>
       ) : (
         <>
-          <input
-            className="p-2 border border-gray-300 h-12"
-            type="email"
-            name="email"
-            placeholder="Email"
-            onChange={(e) => handleChange(e, "login")}
-          />
-          <input
-            className="p-2 border border-gray-300 h-12"
-            type="password"
-            name="password"
-            placeholder="Password"
-            onChange={(e) => handleChange(e, "login")}
-            autoComplete="off"
-          />
-          {errorMessage && (
-            <p className="text-red-500 text-sm mt-1">{errorMessage}</p>
-          )}
-          <button
-            className="bg-orange-600 h-12 text-white cursor-pointer mt-2"
-            onClick={handleLogin}
-          >
-            Login
-          </button>
+          <input className="p-2 border h-12" type="email" name="email" placeholder="Email" onChange={(e) => handleChange(e, "login")} />
+          <input className="p-2 border h-12" type="password" name="password" placeholder="Password" onChange={(e) => handleChange(e, "login")} autoComplete="off" />
+          {errorMessage && <p className="text-red-500 text-sm mt-1">{errorMessage}</p>}
+          <button className="bg-orange-600 h-12 text-white cursor-pointer mt-2" onClick={handleLogin}>Login</button>
         </>
       )}
     </div>

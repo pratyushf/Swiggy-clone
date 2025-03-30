@@ -105,6 +105,7 @@ const Navbar = () => {
                 <p
                   onClick={() => {
                     dispatch(setLoggedIn(false));
+                    window.location.reload();
                   }}
                   className="px-4 py-2 cursor-pointer hover:font-semibold"
                 >
